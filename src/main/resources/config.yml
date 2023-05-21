@@ -1,0 +1,14 @@
+pvp: false
+setup_spawn: false
+spawn_void: true
+sempre_dia: true
+quebrar_blocos: false
+colocar_blocos: false
+interagir_blocos: false
+dano_queda: false
+mensagem_vip: true
+fome: false
+morrer: false
+spawn_x: 0
+spawn_y: 64
+spawn_z: 0

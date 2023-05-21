@@ -1,0 +1,16 @@
+name: N3rdyLobby
+version: '${project.version}'
+main: software.n3rdylobby.N3rdyLobby
+api-version: 1.19
+authors: [N3rdyDev]
+description: Plugin para lobby.
+website: github.com/iagof-dev
+commands:
+  definirspawn:
+      description: define a localizacao do spawn, para quando player entrar.
+      usage: /definirspawn
+      permission-message: Sem permissao.
+  build:
+    description: Ativa o modo construcao, para poder colocar/quebrar blocos
+    usage: /build
+    permission-message: Sem permissao.
