@@ -1,5 +1,8 @@
 package software.n3rdylobby.events;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,8 +25,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import software.n3rdylobby.Handles.HandleGUI;
+import software.n3rdylobby.N3rdyLobby;
 import software.n3rdylobby.config_spawn;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class LobbyEvents implements Listener {
@@ -45,7 +52,7 @@ public class LobbyEvents implements Listener {
 
         boolean membro = true;
         String perm = "n3rdydev.0000.buildon";
-        Player p = e.getPlayer();
+        Player p = (Player) e.getPlayer();
         e.setJoinMessage("");
 
 
@@ -64,6 +71,7 @@ public class LobbyEvents implements Listener {
             p.setDisplayName("§c[Admin] " + p.getName());
             p.setPlayerListName("§c[Admin] " + p.getName());
             p.setAllowFlight(true);
+
         }
         if (p.hasPermission("n3rdydev.cargo.developer")) {
             p.setDisplayName("§6[Dev] " + p.getName());
@@ -89,7 +97,9 @@ public class LobbyEvents implements Listener {
         bussola.setItemMeta(bussola_meta);
         p.getInventory().setItem(4, bussola);
 
-        p.setScoreboard(software.n3rdylobby.Handles.HandleScoreboard.sb_default(e.getPlayer()));
+        for(Player allp : Bukkit.getOnlinePlayers()){
+            allp.setScoreboard(software.n3rdylobby.Handles.HandleScoreboard.sb_default(allp));
+        }
 
         //Podre, funciona mas não é o ideal, depois eu arrumo :)
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "playsound random.successful_hit " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + " " + p.getLocation().getZ() + " 100");
@@ -107,24 +117,29 @@ public class LobbyEvents implements Listener {
                 switch (e.getCurrentItem().getType()) {
                     case GRASS:
                         p.closeInventory();
-                        p.sendMessage("Vc clicou no Survival");
+                        sendServer(p, "survival");
                         break;
                 }
-
-//                if (!e.getCurrentItem().getItemMeta().getDisplayName().equals(null)) {
-//                    if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.BLUE + "SURVIVAL")) {
-//                        p.sendMessage("Vc clicou no Survival");
-//                    }
-//                }
-
 
             }
         }
     }
 
+    private void sendServer(Player player, String server) {
+
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF(server);
+
+        player.sendPluginMessage(N3rdyLobby.getPlugin(), "BungeeCord", out.toByteArray());
+        player.sendMessage("§aRedirecionando para " + server + ".");
+    }
+
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
+        Player p = (Player) e.getPlayer();
+        p.setScoreboard(software.n3rdylobby.Handles.HandleScoreboard.sb_default(p));
         e.setQuitMessage("");
     }
 
@@ -240,7 +255,7 @@ public class LobbyEvents implements Listener {
     }
 
     @EventHandler
-    public void OnPlayerMove(PlayerChatEvent e) {
+    public void PlayerChatEvent(PlayerChatEvent e) {
         String cargo = "§7";
         Player p = e.getPlayer();
         if (p.hasPermission("n3rdydev.cargo.vip")) {
@@ -273,5 +288,9 @@ public class LobbyEvents implements Listener {
             e.setCancelled(false);
         }
     }
+
+
+
+
 
 }
