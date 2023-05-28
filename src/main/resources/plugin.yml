@@ -9,8 +9,20 @@ commands:
   definirspawn:
       description: define a localizacao do spawn, para quando player entrar.
       usage: /definirspawn
-      permission-message: Sem permissao.
+      permission-message: §cSem permissao.
   build:
     description: Ativa o modo construcao, para poder colocar/quebrar blocos
     usage: /build
-    permission-message: Sem permissao.
+    permission-message: §cSem permissao.
+  spawn:
+    description: teleporta para o spawn.
+    usage: /spawn
+    permission-message: §cSem permissao.
+  voar:
+    description: faz voar.
+    usage: /voar
+    permission-message: §cSem permissao.
+  servers:
+    description: lista de servidores
+    usage: /servers
+    permission-message: §cSem permissao.

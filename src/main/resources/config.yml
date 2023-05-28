@@ -5,8 +5,11 @@ sempre_dia: true
 quebrar_blocos: false
 colocar_blocos: false
 interagir_blocos: false
+cancelar_drop: true
 dano_queda: false
+tnt_explodir: false
 mensagem_vip: true
+clima_estatico: true
 fome: false
 morrer: false
 spawn_x: 0
