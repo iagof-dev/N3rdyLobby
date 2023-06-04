@@ -1,8 +1,19 @@
 package software.n3rdylobby.events;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLib;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.reflect.StructureModifier;
+import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,7 +42,11 @@ import software.n3rdylobby.config_spawn;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class LobbyEvents implements Listener {
 
@@ -74,10 +89,10 @@ public class LobbyEvents implements Listener {
 
         }
         if (p.hasPermission("n3rdydev.cargo.developer")) {
+            Player joinedPlayer = e.getPlayer();
             p.setDisplayName("§6[Dev] " + p.getName());
             p.setPlayerListName("§6[Dev] " + p.getName());
             p.setAllowFlight(true);
-
         }
 
         if(p.hasPermission(perm)){
@@ -105,6 +120,7 @@ public class LobbyEvents implements Listener {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "playsound random.successful_hit " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + " " + p.getLocation().getZ() + " 100");
     }
 
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
@@ -126,7 +142,6 @@ public class LobbyEvents implements Listener {
     }
 
     private void sendServer(Player player, String server) {
-
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(server);
@@ -164,7 +179,6 @@ public class LobbyEvents implements Listener {
                 e.setCancelled(true);
             }
         }
-
     }
 
 

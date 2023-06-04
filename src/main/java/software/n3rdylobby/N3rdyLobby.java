@@ -23,9 +23,7 @@ public final class N3rdyLobby extends JavaPlugin implements Listener, PluginMess
 
     @Override
     public void onEnable() {
-
         plugin = this;
-
 
         //Load Config
         config = this.getConfig();
@@ -75,9 +73,7 @@ public final class N3rdyLobby extends JavaPlugin implements Listener, PluginMess
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subchannel = in.readUTF();
-        if (subchannel.equals("SomeSubChannel")) {
-            // Use the code sample in the 'Response' sections below to read
-            // the data.
+        if (subchannel.equals("ablublubluble")) {
         }
     }
 }
