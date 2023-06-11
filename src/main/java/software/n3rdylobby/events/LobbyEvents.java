@@ -69,7 +69,7 @@ public class LobbyEvents implements Listener {
         String perm = "n3rdydev.0000.buildon";
         Player p = (Player) e.getPlayer();
         e.setJoinMessage("");
-
+        p.setPlayerListName("§7");
 
         for (PotionEffect effect : p.getActivePotionEffects())
             p.removePotionEffect(effect.getType());
@@ -115,9 +115,7 @@ public class LobbyEvents implements Listener {
         for(Player allp : Bukkit.getOnlinePlayers()){
             allp.setScoreboard(software.n3rdylobby.Handles.HandleScoreboard.sb_default(allp));
         }
-
-        //Podre, funciona mas não é o ideal, depois eu arrumo :)
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "playsound random.successful_hit " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + " " + p.getLocation().getZ() + " 100");
+        p.playSound(p.getLocation(), Sound.SUCCESSFUL_HIT, 1, 1);
     }
 
 
