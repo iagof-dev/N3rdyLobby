@@ -12,6 +12,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.PluginManager;
 import software.n3rdylobby.N3rdyLobby;
+import software.n3rdylobby.entity.player;
 
 public class build implements CommandExecutor, Listener {
     @Override
@@ -19,22 +20,18 @@ public class build implements CommandExecutor, Listener {
 
         Player p = (Player) sender;
 
-        if(p.hasPermission("n3rdydev.construir") || p.hasPermission("n3rdydev.*"))
+        if(!(player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId())))
         {
-            String perm = "n3rdydev.0000.buildon";
-            if(p.hasPermission(perm)){
+            if (player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId()) != false) {
                 //remove
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + p.getName() + " permission unset " + perm);
+                player.can_build.put(p.getUniqueId(), false);
                 p.sendMessage("§cModo Construir DESABILITADO!");
-                return true;
             }
             else{
                 //adiciona
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + p.getName() + " permission set " + perm);
+                player.can_build.put(p.getUniqueId(), true);
                 p.sendMessage("§aModo Construir HABILITADO!");
-                return true;
             }
-
         }
         return true;
 

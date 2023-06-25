@@ -38,6 +38,7 @@ import org.bukkit.potion.PotionEffect;
 import software.n3rdylobby.Handles.HandleGUI;
 import software.n3rdylobby.N3rdyLobby;
 import software.n3rdylobby.config_spawn;
+import software.n3rdylobby.entity.player;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -65,39 +66,12 @@ public class LobbyEvents implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent e) {
 
-        boolean membro = true;
-        String perm = "n3rdydev.0000.buildon";
         Player p = (Player) e.getPlayer();
         e.setJoinMessage("");
         p.setPlayerListName("§7");
 
         for (PotionEffect effect : p.getActivePotionEffects())
             p.removePotionEffect(effect.getType());
-
-        if (p.hasPermission("n3rdydev.cargo.vip")) {
-            e.setJoinMessage("§d[VIP]§f " + e.getPlayer().getName() + " §6entrou neste lobby!");
-            p.setDisplayName("§d[VIP] " + e.getPlayer().getName());
-            p.setPlayerListName("§d[VIP] " + p.getName());
-
-            p.setAllowFlight(true);
-            membro = false;
-        }
-        if (p.hasPermission("n3rdydev.cargo.admin")) {
-            p.setDisplayName("§c[Admin] " + p.getName());
-            p.setPlayerListName("§c[Admin] " + p.getName());
-            p.setAllowFlight(true);
-
-        }
-        if (p.hasPermission("n3rdydev.cargo.developer")) {
-            Player joinedPlayer = e.getPlayer();
-            p.setDisplayName("§6[Dev] " + p.getName());
-            p.setPlayerListName("§6[Dev] " + p.getName());
-            p.setAllowFlight(true);
-        }
-
-        if(p.hasPermission(perm)){
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + p.getName() + " permission unset " + perm);
-        }
 
         Location loc = new Location(p.getWorld(), config_spawn.spawn_x, config_spawn.spawn_y, config_spawn.spawn_z);
         p.teleport(loc);
@@ -122,16 +96,16 @@ public class LobbyEvents implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if (p.hasPermission("n3rdydev.0000.buildon")) {
+        if (player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId()) != false) {
             e.setCancelled(false);
         } else {
             e.setCancelled(true);
             if (e.getView().getTitle().equals("Lista de Servidores")) {
 
                 switch (e.getCurrentItem().getType()) {
-                    case GRASS:
+                    case DIAMOND_SWORD:
                         p.closeInventory();
-                        sendServer(p, "survival");
+                        sendServer(p, "kitpvp");
                         break;
                 }
 
@@ -179,24 +153,6 @@ public class LobbyEvents implements Listener {
         }
     }
 
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onOperatorSet(PlayerCommandPreprocessEvent event) {
-        if (event.getPlayer().hasPermission("n3rdydev.comandos")) {
-
-        } else {
-            String cmd = event.getMessage();
-            String[] blocked_cmds = {"/plugins", "/plugins ", "/pl", "/pl ", "/about", "/about ", "/ver", "/ver "};
-            for (int i = 0; i < blocked_cmds.length; i++) {
-                if (cmd.startsWith(blocked_cmds[i])) {
-                    event.setCancelled(true);
-                    event.getPlayer().sendMessage("§cComando Inexistente...");
-                }
-            }
-        }
-
-    }
-
     @EventHandler
     public void PlayerHunger(FoodLevelChangeEvent e) {
         e.setCancelled(true);
@@ -204,7 +160,8 @@ public class LobbyEvents implements Listener {
 
     @EventHandler
     public void PlayerBreakBlock(BlockBreakEvent e) {
-        if (e.getPlayer().hasPermission("n3rdydev.0000.buildon")) {
+        Player p = e.getPlayer();
+        if (player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId()) != false) {
             e.setCancelled(false);
         } else {
             e.setCancelled(true);
@@ -213,7 +170,8 @@ public class LobbyEvents implements Listener {
 
     @EventHandler
     public void PlayerPlaceBlock(BlockPlaceEvent e) {
-        if (e.getPlayer().hasPermission("n3rdydev.0000.buildon")) {
+        Player p = e.getPlayer();
+        if (player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId()) != false) {
             e.setCancelled(false);
         } else {
             e.setCancelled(true);
@@ -223,7 +181,7 @@ public class LobbyEvents implements Listener {
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent e) {
         Player p = (Player) e.getPlayer();
-        if (e.getPlayer().hasPermission("n3rdydev.0000.buildon")) {
+        if (player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId()) != false) {
             e.setCancelled(false);
         } else {
             if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {

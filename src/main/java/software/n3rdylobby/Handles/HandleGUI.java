@@ -19,7 +19,7 @@ public class HandleGUI implements Listener {
         Inventory inv = Bukkit.createInventory(p, 9*3, "Lista de Servidores");
 
         //adicionar itens
-        inv.setItem(11, createItem(new ItemStack(Material.GRASS), "&9SURVIVAL", "&aEntre em um ambiente desafiador e imersivo.", "&aExplore uma ampla variedade de biomas.", "§6Clique para entrar!"));
+        inv.setItem(11, createItem(new ItemStack(Material.DIAMOND_SWORD), "&9KitPvP", "&aTreine seu pvp.", "&a", "§6Clique para entrar!"));
         return inv;
     }
     private static ItemStack createItem(ItemStack item, String nome, String ... descricao){

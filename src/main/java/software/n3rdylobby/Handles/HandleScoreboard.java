@@ -34,7 +34,7 @@ public class HandleScoreboard extends JavaPlugin {
         String user_role = ("§l§7Grupo:§f " + cargo);
         String separador = "§7--- ---";
         String server_1 = "§l§aLobby: §f%bungee_lobby%";
-        String server_ip = ("§7n3rdynetwork.teste");
+        String server_ip = ("§7us.n3rdydesigner.xyz");
         server_1 = PlaceholderAPI.setPlaceholders(p, server_1);
         Score role = obj.getScore(user_role);
         Score separator = obj.getScore(separador);
