@@ -14,22 +14,24 @@ import org.bukkit.plugin.PluginManager;
 import software.n3rdylobby.N3rdyLobby;
 import software.n3rdylobby.entity.player;
 
+import java.util.UUID;
+
 public class build implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         Player p = (Player) sender;
-
-        if(!(player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId())))
+        UUID puid = p.getUniqueId();
+        if(!(player.can_build.get(puid) != null || player.can_build.get(p.getUniqueId())))
         {
-            if (player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId()) != false) {
+            if (player.can_build.get(puid) != null || player.can_build.get(p.getUniqueId()) != false) {
                 //remove
-                player.can_build.put(p.getUniqueId(), false);
+                player.can_build.put(puid, false);
                 p.sendMessage("§cModo Construir DESABILITADO!");
             }
             else{
                 //adiciona
-                player.can_build.put(p.getUniqueId(), true);
+                player.can_build.put(puid, true);
                 p.sendMessage("§aModo Construir HABILITADO!");
             }
         }

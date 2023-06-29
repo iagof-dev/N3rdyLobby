@@ -44,10 +44,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class LobbyEvents implements Listener {
 
@@ -85,7 +82,7 @@ public class LobbyEvents implements Listener {
         bussola_meta.setLore(Arrays.asList("Lista de Servidores", "Clique em um para entrar"));
         bussola.setItemMeta(bussola_meta);
         p.getInventory().setItem(4, bussola);
-        for(Player allp : Bukkit.getOnlinePlayers()){
+        for (Player allp : Bukkit.getOnlinePlayers()) {
             allp.setScoreboard(software.n3rdylobby.Handles.HandleScoreboard.sb_default(allp));
         }
         p.playSound(p.getLocation(), Sound.SUCCESSFUL_HIT, 1, 1);
@@ -95,21 +92,17 @@ public class LobbyEvents implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if (player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId()) != false) {
-            e.setCancelled(false);
-        } else {
-            e.setCancelled(true);
-            if (e.getView().getTitle().equals("Lista de Servidores")) {
-
-                switch (e.getCurrentItem().getType()) {
-                    case DIAMOND_SWORD:
-                        p.closeInventory();
-                        sendServer(p, "kitpvp");
-                        break;
-                }
-
+        e.setCancelled(true);
+        if (e.getView().getTitle().equals("Lista de Servidores")) {
+            switch (e.getCurrentItem().getType()) {
+                case DIAMOND_SWORD:
+                    p.closeInventory();
+                    sendServer(p, "kitpvp");
+                    break;
             }
+
         }
+        e.setCancelled(true);
     }
 
     private void sendServer(Player player, String server) {
@@ -170,7 +163,8 @@ public class LobbyEvents implements Listener {
     @EventHandler
     public void PlayerPlaceBlock(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        if (player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId()) != false) {
+        UUID puid = p.getUniqueId();
+        if (player.can_build.get(puid) != null && player.can_build.get(puid) != false) {
             e.setCancelled(false);
         } else {
             e.setCancelled(true);
@@ -180,18 +174,15 @@ public class LobbyEvents implements Listener {
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent e) {
         Player p = (Player) e.getPlayer();
-        if (player.can_build.get(p.getUniqueId()) != null || player.can_build.get(p.getUniqueId()) != false) {
-            e.setCancelled(false);
-        } else {
-            if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-                if (e.getItem() != null && e.getItem().getType().equals(Material.COMPASS)) {
-                    p.openInventory(HandleGUI.Server_GUI(p));
-                    e.setCancelled(false);
-                }
-                e.setCancelled(true);
+        UUID puid = p.getUniqueId();
+
+        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (e.getItem() != null && e.getItem().getType().equals(Material.COMPASS)) {
+                p.openInventory(HandleGUI.Server_GUI(p));
+                e.setCancelled(false);
             }
-            e.setCancelled(true);
         }
+        e.setCancelled(true);
     }
 
     @EventHandler
@@ -257,9 +248,6 @@ public class LobbyEvents implements Listener {
             e.setCancelled(false);
         }
     }
-
-
-
 
 
 }
