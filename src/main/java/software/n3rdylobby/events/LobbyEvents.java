@@ -85,7 +85,6 @@ public class LobbyEvents implements Listener {
         bussola_meta.setLore(Arrays.asList("Lista de Servidores", "Clique em um para entrar"));
         bussola.setItemMeta(bussola_meta);
         p.getInventory().setItem(4, bussola);
-
         for(Player allp : Bukkit.getOnlinePlayers()){
             allp.setScoreboard(software.n3rdylobby.Handles.HandleScoreboard.sb_default(allp));
         }
