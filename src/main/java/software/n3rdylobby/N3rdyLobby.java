@@ -20,7 +20,13 @@ public final class N3rdyLobby extends JavaPlugin implements Listener, PluginMess
         return plugin;
     }
 
+    /*
+    TODO LIST:
 
+    - Refazer tudo
+
+    */
+    
     @Override
     public void onEnable() {
         plugin = this;
